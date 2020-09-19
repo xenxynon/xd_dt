@@ -38,6 +38,13 @@ public class IFAAManagerImpl extends IFAAManagerV4 {
 
     private static final String INTERFACE_DESCRIPTOR = "vendor.xiaomi.hardware.mlipay@1.0::IMlipayService";
     private static final String SERVICE_NAME = "vendor.xiaomi.hardware.mlipay@1.0::IMlipayService";
+    private static final String CA_CERT_ALIAS_DELIMITER = " ";
+
+    private static final String INTERFACE_DESCRIPTOR =
+            "vendor.xiaomi.hardware.mlipay@1.0::IMlipayService";
+    private static final String SERVICE_NAME =
+            "vendor.xiaomi.hardware.mlipay@1.0::IMlipayService";
+    private static final String TAG = "IfaaManagerImpl";
 
     private static final int ACTIVITY_START_SUCCESS = 0;
     private static final int ACTIVITY_START_FAILED = -1;
@@ -101,6 +108,67 @@ public class IFAAManagerImpl extends IFAAManagerV4 {
         if (!mContext.bindService(ifaaIntent, ifaaconn, 1)) {
             Slog.e(TAG, "cannot bind service org.ifaa.android.manager.IFAAService");
         }
+    }
+
+    private boolean validateVal(String value) {
+        return !"".equalsIgnoreCase(value) && value.contains(",");
+    }
+
+    public String getDeviceModel() {
+        if (mDevModel == null) {
+            mDevModel = Build.MANUFACTURER + "-" + Build.DEVICE;
+        }
+
+        Slog.i(TAG, "getDeviceModel deviceModel:" + mDevModel);
+        return mDevModel;
+    }
+
+    public int getEnabled(int bioType) {
+        return 1 == bioType ? 1000 : 1003;
+    }
+
+    public String getExtInfo(int authType, String keyExtInfo) {
+        Slog.i(TAG, "getExtInfo:" + authType + CA_CERT_ALIAS_DELIMITER + keyExtInfo);
+        return initExtString();
+    }
+
+    public int[] getIDList(int bioType) {
+        int[] idList = new int[]{0};
+        if (1 == bioType) {
+            int retry_count = 10;
+            while (true) {
+                int retry_count2 = retry_count - 1;
+                if (retry_count <= 0) {
+                    break;
+                }
+                if (mService == null || !mService.pingBinder()) {
+                    try {
+                        Thread.sleep(30);
+                    } catch (InterruptedException e) {
+                        Slog.e(TAG, "getIDList InterruptedException while waiting: " + e, e);
+                    }
+                } else {
+                    Parcel data = Parcel.obtain();
+                    Parcel reply = Parcel.obtain();
+                    try {
+                        data.writeInterfaceToken(mIfaaInterfaceDesc);
+                        data.writeInt(bioType);
+                        mService.transact(CODE_GETIDLIST_CMD, data, reply, 0);
+                        reply.readException();
+                        idList = reply.createIntArray();
+                    } catch (RemoteException e) {
+                        Slog.e(TAG, "getIDList transact failed. ", e);
+                    } catch (Throwable th) {
+                        data.recycle();
+                        reply.recycle();
+                    }
+                    data.recycle();
+                    reply.recycle();
+                }
+                retry_count = retry_count2;
+            }
+        }
+        return idList;
     }
 
     public int getSupportBIOTypes(Context context) {
