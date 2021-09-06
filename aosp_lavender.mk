@@ -9,12 +9,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_p.mk)
 
-# Inherit some common PixelExperience stuff
-$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+# Inherit some common PixelExtended stuff
+$(call inherit-product, vendor/aosp/config/common_full_phone.mk) 
 TARGET_BOOT_ANIMATION_RES := 1080
 TARGET_GAPPS_ARCH := arm64
 TARGET_INCLUDE_STOCK_ARCORE := true
 TARGET_SUPPORTS_GOOGLE_RECORDER := true
+PEX_BUILD_TYPE := OFFICIAL
+PEX_MAINTAINER := Prashant
 
 # Inherit from lavender device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
@@ -33,3 +35,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     PRIVATE_BUILD_DESC="coral-user 11 RQ3A.210805.001.A1 7474174 release-keys"
 
 BUILD_FINGERPRINT :="google/coral/coral:11/RQ3A.210805.001.A1/7474174:user/release-keys"
+
+# Pixel Extended Device Maintainers
+PRODUCT_PROPERTY_OVERRIDES += \
+    org.pex.build_maintainer=Prashant
