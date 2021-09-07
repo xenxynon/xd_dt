@@ -204,7 +204,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    debug.sf.disable_backpressure=1 
+    debug.sf.disable_backpressure=1
+
+# Graphics
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.egl=adreno	 \
+    ro.hardware.vulkan=adreno
 
 # QCOM
 PRODUCT_PROPERTY_OVERRIDES += \
