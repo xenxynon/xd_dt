@@ -31,3 +31,5 @@ telephony.lteOnCdmaDevice=1
 
 # Zygote
 persist.device_config.runtime_native.usap_pool_enabled=true
+
+vendor.display.disable_rotator_downscale=1
