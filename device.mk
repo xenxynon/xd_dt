@@ -322,6 +322,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.power-service-qti
 
+# QTI Perf
+PRODUCT_PACKAGES += \
+    libtflite \
+    libtextclassifier_hash
+
+# QTI common
+-include vendor/qcom/common/perf/perf-vendor.mk
+
 # Protobuf
 PRODUCT_PACKAGES += \
     libprotobuf-cpp-full-vendorcompat \
