@@ -28,30 +28,13 @@
 #
 
 on init
-    write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 5
-    write /dev/stune/top-app/schedtune.prefer_idle 1
-
-    # Setup permission for Power HAL
-    chown system system /dev/stune/top-app/schedtune.boost
-    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
-    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
-    chown system system /sys/class/kgsl/kgsl-3d0/force_rail_on
-    chown system system /sys/class/kgsl/kgsl-3d0/force_clk_on
-    chown system system /sys/class/kgsl/kgsl-3d0/idle_timer
-    chown system system /sys/class/devfreq/soc:qcom,cpubw/min_freq
-    chown system system /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_trigger_count
-    chown system system /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory
-
-    chmod 0664 /dev/stune/top-app/schedtune.boost
-    chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
-    chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
-    chmod 0664 /sys/class/kgsl/kgsl-3d0/force_rail_on
-    chmod 0664 /sys/class/kgsl/kgsl-3d0/force_clk_on
-    chmod 0664 /sys/class/kgsl/kgsl-3d0/idle_timer
-    chmod 0664 /sys/class/devfreq/soc:qcom,cpubw/min_freq
-    chmod 0664 /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_trigger_count
-
+    write /dev/stune/foreground/schedtune.sched_boost_no_override 1
+    write /dev/stune/top-app/schedtune.sched_boost_no_override 1
+    write /dev/stune/schedtune.colocate 0
+    write /dev/stune/background/schedtune.colocate 0
+    write /dev/stune/system-background/schedtune.colocate 0
+    write /dev/stune/foreground/schedtune.colocate 0
+    write /dev/stune/top-app/schedtune.colocate 1
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -89,9 +72,9 @@ on post-fs-data
 on boot
     start vendor.rmt_storage
     start rfs_access
+    write /dev/cpuset/audio-app/cpus 1-2
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 0-7
     write /dev/cpuset/background/cpus 0-7
     write /dev/cpuset/system-background/cpus 0-7
     ####Regionalization config and prop files####
@@ -117,7 +100,9 @@ on boot
 
     # Double Tap to Wake
     chown system system /proc/tp_gesture
+    chown system system /sys/touchpanel/double_tap
     chmod 0664 /proc/tp_gesture
+    chmod 0664 /sys/touchpanel/double_tap
 
 #Load WLAN driver
    insmod /vendor/lib/modules/qca_cld3_wlan.ko
@@ -151,6 +136,12 @@ on property:init.svc.vendor.per_mgr=running
 on property:sys.shutdown.requested=*
     stop vendor.per_proxy
 
+
+on property:sys.boot_completed=1
+    setprop sys.io.scheduler "bfq"
+    # Enable ZRAM on boot_complete
+    swapon_all /vendor/etc/fstab.qcom
+    write /proc/sys/vm/swappiness 100
 
 service vendor.qseecomd /vendor/bin/qseecomd
    class core
