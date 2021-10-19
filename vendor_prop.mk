@@ -110,7 +110,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.camera.expose.aux=1 \
     persist.vendor.camera.awb.sync=2 \
     persist.sys.camera.camera2=true \
-    vendor.video.disable.ubwc=1   
+    vendor.video.disable.ubwc=1
 
 # Charger
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -198,6 +198,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.surface_flinger.force_hwc_copy_for_virtual_displays=true \
     ro.surface_flinger.max_frame_buffer_acquired_buffers=3 \
     ro.surface_flinger.max_virtual_display_dimension=4096
+
+# Enable Gestural navbar by default
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
 
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.disable_backpressure=1 
