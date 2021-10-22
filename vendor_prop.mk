@@ -123,7 +123,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
-    debug.sf.latch_unsignaled=0 \
     ro.opengles.version=196610 \
     ro.vendor.display.sensortype=2 \
     vendor.gralloc.enable_fb_ubwc=1 \
@@ -202,9 +201,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Enable Gestural navbar by default
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.sf.disable_backpressure=1
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
