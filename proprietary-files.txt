@@ -1,8 +1,5 @@
 # lavender package version: V12.5.1.0.QFGEUXM, unless stated otherwise
 
-# energy-awareness
-vendor/bin/energy-awareness
-
 # ADSP - from LA.UM.8.2.r1-06700-sdm660.0
 lib/libadsprpc_system.so|64294323038962ca2d6bd93d61451e605c054563
 lib/libmdsprpc_system.so|5e8d71b29afefa66d751a2a07b8f2c3d5405df63
