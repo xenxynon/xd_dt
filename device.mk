@@ -351,9 +351,10 @@ PRODUCT_PACKAGES += \
     libtextclassifier_hash
 
 # QTI common
--include vendor/qcom/common/perf/perf-vendor.mk
--include vendor/qcom/common/telephony/telephony-vendor.mk
--include vendor/qcom/common/bt/bt-vendor.mk
+-include vendor/qcom/common/vendor/perf/perf-vendor.mk
+-include vendor/qcom/common/system/perf/perf-vendor.mk
+-include vendor/qcom/common/system/telephony/telephony-vendor.mk
+-include vendor/qcom/common/system/bt/bt-vendor.mk
 
 # QTI Bluetooth
 -include vendor/qcom/opensource/commonsys-intf/bluetooth/bt-commonsys-intf-board.mk
