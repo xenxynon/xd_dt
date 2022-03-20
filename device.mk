@@ -196,9 +196,9 @@ PRODUCT_PACKAGES += \
     qcom.fmradio \
     qcom.fmradio.xml
 
-# Cam
+# Gcam
 PRODUCT_PACKAGES += \
-    GrapheneCam
+    GoogleCameraGo
 
 # fwk-detect
 PRODUCT_PACKAGES += \
